@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO     # Import the RPi.GPIO library for GPIO control.
 GPIO.setmode(GPIO.BCM)  
 
 
-# Define the GPIO pin numbers for the ultrasonic sensor-trig pin and echo pin, and the buzzer.
+# Define the GPIO pin numbers for the ultrasonic sensor-trig pin echo pin, and the LED.
 LED_pin = 12
 trig_pin=4
 echo_pin=17
@@ -28,14 +28,14 @@ def calc_distance():
     GPIO.output(trig_pin, False)
 
 
-# Measure the time echo pin takes from low to high and back to low.
+# Measure the time the echo pin takes from low to high and back to low.
     while GPIO.input(echo_pin) == 0:
         pulse_start_time = time.time()
     while GPIO.input(echo_pin) == 1:
         pulse_end_time = time.time()
 
 
-# Determine the pulse duration and convert it into centimetres.
+# Determine the pulse duration and convert it into centimeters.
     total_pulse_duration = pulse_end_time - pulse_start_time
     distance= total_pulse_duration * 34300 / 2      #Speed of sound in cm/s
     
@@ -49,14 +49,14 @@ try:
         
         if dist_cm < 10:                 # Check if the distance is less than 10 cm (object is in range).
           
-            GPIO.output(LED_pin, GPIO.HIGH)      #Buzzer will beep.
+            GPIO.output(LED_pin, GPIO.HIGH)      #LED will be on.
             print("Object is in range")
         else:            # Else the distance is more than 10 cm (object is out of range).
             
-            GPIO.output(LED_pin, GPIO.LOW)       #Buzzer will be off.
+            GPIO.output(LED_pin, GPIO.LOW)       #LED will be off.
             print("Object is out of range")
         
-        time.sleep(0.15)   # Sleep for 0.15 second before taking the next distance.
+        time.sleep(0.15)   # Sleep for 0.15 seconds before taking the next distance.
 
 
 # Handle a keyboard interrupt to clear the GPIO pins (Ctrl+C).
